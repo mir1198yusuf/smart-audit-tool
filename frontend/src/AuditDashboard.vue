@@ -2,9 +2,12 @@
   <div class="dashboard">
     <header class="dashboard-header">
       <h1>Audit Entries</h1>
-      <button type="button" class="btn-primary" @click="ingestModal.open()">
-        + New Entry
-      </button>
+      <div class="new-entry-group">
+        <span class="new-entry-hint">Quick testing — skip the API</span>
+        <button type="button" class="btn-primary" @click="ingestModal.open()">
+          + New Entry
+        </button>
+      </div>
     </header>
 
     <p v-if="error" class="form-error">{{ error }}</p>
@@ -235,6 +238,16 @@ onBeforeUnmount(() => {
 .dashboard-header h1 {
   font-size: 1.4rem;
   margin: 0;
+}
+.new-entry-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.new-entry-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+  white-space: nowrap;
 }
 .btn-primary {
   background: #2563eb;
