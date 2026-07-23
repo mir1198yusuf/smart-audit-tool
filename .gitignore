@@ -1,0 +1,23 @@
+# Dependencies (each of backend/, frontend/, worker/, migrations/ has its own,
+# no shared/hoisted node_modules per agent-docs/conventions.md)
+node_modules/
+
+# Env files (never commit real secrets/credentials)
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
