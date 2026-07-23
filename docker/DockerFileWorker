@@ -4,7 +4,7 @@
 #   docker build -f docker/DockerFileWorker -t smart-audit-worker worker
 
 
-FROM node:20-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
