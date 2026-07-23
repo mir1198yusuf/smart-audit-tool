@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Server running fine' });
+  res.status(200).json({ status: 'ok', message: 'Server running fine!' });
 });
 
 app.use('/api/audit-entries', auditEntriesRoutes);
