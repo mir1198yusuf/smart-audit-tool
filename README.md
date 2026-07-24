@@ -12,7 +12,7 @@ AI-Enriched Continuous Audit Pipeline — prototype Audit platform (Vue.js + Exp
 At repo root, run below
 
 1. `npm run install:all` — installs dependencies for root, `backend/`, `frontend/`, `worker/`, and `migrations/`.
-2. `npm run setup:env` — prompts for env values and writes `.env` in `backend/`, `frontend/`, `worker/`, and `migrations/` from each folder's `.env.example`. This is to save your time.
+2. `npm run setup:env` — prompts for env values and automatically writes `.env` in `backend/`, `frontend/`, `worker/`, and `migrations/` from each folder's `.env.example`. This is to save your time.
 3. `npm run migrate:up-all` — applies all database migrations.
 4. `npm run seed` — seeds 10 sample audit entries.
 5. `npm run dev` — starts the backend, frontend, and worker together.
