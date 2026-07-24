@@ -148,7 +148,7 @@ const entries = ref<AuditEntry[]>([]);
 const lastPolledAt = ref<string | null>(null);
 const loading = ref(false);
 const error = ref<string | null>(null);
-// Set only while the very first `loadInitial()` call is outstanding, past 3s — never touched
+// Set only while the very first `loadInitial()` call is outstanding, past 1s — never touched
 // by pollTick, so it can't resurface on a slow background poll, only on the initial page load.
 const slowLoad = ref(false);
 
@@ -176,7 +176,7 @@ async function loadInitial() {
   loading.value = true;
   slowLoad.value = false;
   // Render's free-tier cold start can take several seconds — only mention it if the initial
-  // fetch is still outstanding after 3s, so a normal fast load never flashes this message.
+  // fetch is still outstanding after 1s, so a normal fast load never flashes this message.
   const slowLoadTimer = setTimeout(() => {
     slowLoad.value = true;
   }, 1000);
