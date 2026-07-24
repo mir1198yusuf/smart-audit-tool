@@ -2,6 +2,13 @@
   <div class="dashboard">
     <header class="dashboard-header">
       <h1>Audit Entries</h1>
+      <div v-if="loading" class="initial-load-indicator" role="status" aria-live="polite">
+        <svg class="clock-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+          <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span v-if="slowLoad" class="initial-load-hint">Free-tier hosting — this can take a bit longer to wake up</span>
+      </div>
       <div class="new-entry-group">
         <span class="new-entry-hint">Quick testing — skip the API</span>
         <button type="button" class="btn-primary" @click="ingestModal.open()">
@@ -141,6 +148,9 @@ const entries = ref<AuditEntry[]>([]);
 const lastPolledAt = ref<string | null>(null);
 const loading = ref(false);
 const error = ref<string | null>(null);
+// Set only while the very first `loadInitial()` call is outstanding, past 3s — never touched
+// by pollTick, so it can't resurface on a slow background poll, only on the initial page load.
+const slowLoad = ref(false);
 
 // Each modal composable owns its own open/closed flag AND (for edit/similarity)
 // its snapshot data ref, fully decoupled from `entries` — polling logic only
@@ -164,6 +174,12 @@ const pollTimer = ref<ReturnType<typeof setTimeout> | null>(null);
 // ===== methods =====
 async function loadInitial() {
   loading.value = true;
+  slowLoad.value = false;
+  // Render's free-tier cold start can take several seconds — only mention it if the initial
+  // fetch is still outstanding after 3s, so a normal fast load never flashes this message.
+  const slowLoadTimer = setTimeout(() => {
+    slowLoad.value = true;
+  }, 3000);
   console.log('[poll] loading initial entries…');
   try {
     const res = await fetchAuditEntries();
@@ -177,6 +193,7 @@ async function loadInitial() {
       : err instanceof Error ? err.message : 'Failed to load audit entries.';
     console.error('[poll] initial load failed:', err);
   } finally {
+    clearTimeout(slowLoadTimer);
     loading.value = false;
   }
 }
@@ -238,6 +255,32 @@ onBeforeUnmount(() => {
 .dashboard-header h1 {
   font-size: 1.4rem;
   margin: 0;
+}
+.initial-load-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted, #6b7280);
+}
+.clock-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  animation: clock-pulse 1.4s ease-in-out infinite;
+}
+@keyframes clock-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.initial-load-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+  white-space: nowrap;
 }
 .new-entry-group {
   display: flex;

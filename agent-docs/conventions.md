@@ -41,3 +41,18 @@ Two root-level scripts:
   }
 }
 ```
+
+## Env setup (`npm run setup:env` → `scripts/setup-env.js`)
+
+Each folder's `.env.example` is the only source of truth for which env vars exist — `.env` files
+themselves never carry comments, only `KEY=value` lines. To add a new env var, just add it (with
+its explanatory comment, if any) to the relevant folder's `.env.example`; the next `setup:env` run
+picks it up and prompts for it automatically, no script changes needed.
+
+Every run fully wipes and rewrites each folder's `.env` from scratch (never merges with whatever
+was there before). Within one run, a variable with the same name is only asked once and reused
+across folders. A couple of special cases in the script:
+- `worker`'s `PORT` and `RUN_PING_SERVER` are hardcoded defaults, never prompted.
+- `frontend`'s API base URL var (any key matching `API.*URL`) is derived from `backend`'s `PORT`
+  answer instead of being prompted for.
+- `DB_SSL` only accepts `true`/`false`, re-prompting otherwise.
