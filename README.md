@@ -45,3 +45,4 @@ Postgres is used as both the relational store and the vector store (via the `pgv
 
 - **Embedding dimensions**: the original spec called for 8-dimensional semantic vectors, but Gemini's embedding model doesn't offer an 8-dimensional output size, and a dimension that low would also lose too much semantic quality. Instead, Gemini's 768-dimension output is used.
 - **Gemini for AI/embeddings**: Gemini is used because it has a free tier, keeping the whole stack (frontend, backend, worker, DB, AI) runnable at zero cost.
+- ... to be added later...
