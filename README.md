@@ -1,8 +1,8 @@
-# Smart Audit Interview
+# Smart Audit Tool
 
-AI-Enriched Continuous Audit Pipeline — prototype Audit SaaS platform (Vue.js + Express + PostgreSQL, with a standalone worker for Gemini-powered AI enrichment).
+AI-Enriched Continuous Audit Pipeline — prototype Audit platform (Vue.js + Express + PostgreSQL, with a standalone worker for Gemini-powered AI enrichment).
 
-## Getting Started
+## Getting Started with local run/development
 
 0. Have Postgres running locally or remotely, then create a new database via any db-client:
    ```sql
@@ -25,7 +25,23 @@ All 4 pieces run on free tiers:
 - **Frontend** — Cloudflare Pages
 - **Backend** and **worker** — Render.io Web Services
 - **Postgres** — Aiven.io
+- **AI/embeddings** — Gemini
 
 The worker is a background script with no HTTP requests of its own, so Render's free tier would spin it down from inactivity; it's kept alive by an external cron trigger from [cron-job.org](https://cron-job.org/) hitting its ping endpoint.
 
 Live website: https://smart-audit-tool.pages.dev/
+
+No CI/CD pipeline is set up — Render and Cloudflare Pages are both connected directly to this GitHub repo, so each detects new commits on push and triggers its own deployment automatically.
+
+Postgres is used as both the relational store and the vector store (via the `pgvector` extension).
+
+## Development Process
+
+- The entire codebase was developed by Claude Code
+- Ofcourse, Repo structure, architecture, logic, code review, application testing is done by a human.
+- Deployment is also managed by a human.
+
+## Design Decisions
+
+- **Embedding dimensions**: the original spec called for 8-dimensional semantic vectors, but Gemini's embedding model doesn't offer an 8-dimensional output size, and a dimension that low would also lose too much semantic quality. Instead, Gemini's 768-dimension output is used.
+- **Gemini for AI/embeddings**: Gemini is used because it has a free tier, keeping the whole stack (frontend, backend, worker, DB, AI) runnable at zero cost.
