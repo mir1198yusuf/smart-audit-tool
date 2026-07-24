@@ -179,7 +179,7 @@ async function loadInitial() {
   // fetch is still outstanding after 3s, so a normal fast load never flashes this message.
   const slowLoadTimer = setTimeout(() => {
     slowLoad.value = true;
-  }, 3000);
+  }, 1000);
   console.log('[poll] loading initial entries…');
   try {
     const res = await fetchAuditEntries();
