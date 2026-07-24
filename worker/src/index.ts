@@ -5,7 +5,9 @@ import { runWorkerLoop } from './workerLoop.js';
 async function main(): Promise<void> {
   console.log('Starting worker...');
   // Runs concurrently with the poll loop below — it must never block or delay polling.
-  startHealthServer();
+  if (process.env.RUN_PING_SERVER === 'true') {
+    startHealthServer();
+  }
   await runWorkerLoop();
 }
 

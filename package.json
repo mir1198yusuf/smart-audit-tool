@@ -5,6 +5,7 @@
   "description": "AI-Enriched Continuous Audit Pipeline — prototype Audit SaaS platform",
   "scripts": {
     "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend && npm install --prefix worker && npm install --prefix migrations",
+    "setup:env": "node scripts/setup-env.js",
     "dev": "concurrently -n backend,frontend,worker -c blue,green,yellow \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\" \"npm run dev --prefix worker\"",
     "migrate:up-all": "npm run migrate:up-all --prefix migrations",
     "migrate:down-all": "npm run migrate:down-all --prefix migrations",
